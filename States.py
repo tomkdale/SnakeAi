@@ -453,6 +453,7 @@ class PlayState(State):
                 simOuput[2] = 1
             ouputList = ann_inputs + simOuput
             print(ouputList)
+            # TODO: make it so that instead of outputting a 2 when near the body of the snake, maybe a -1?
 
         
 

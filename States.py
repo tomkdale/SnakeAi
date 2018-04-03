@@ -12,6 +12,7 @@ import math
 
 DIRECTIONS = ['LEFT','UP','RIGHT','DOWN']
 SCORE_MULTIPLY = 50
+GENERATE_DATA = True
 # This is used to count to 16 so that each of the 16 pre set food and starting velocities are used!
 FOOD_COUNTER = CounterSixteen()
 
@@ -298,8 +299,16 @@ class PlayState(State):
         player = self.player
         player.delete = None, None
 
+        # Store the previous direction in case we need to generate data
+        prev_direction = player.direction
+        prev_inputs = self.ann_inputs()
+
         # UPDATE NEXT MOVE
         player.direction = self.get_move()
+
+        # Generate Data for the current data and the move
+        if GENERATE_DATA:
+            self.generate_data(prev_inputs, prev_direction, player.direction)
 
         # PLAYER POSITION UPDATE
         row, column = player.update()
@@ -429,6 +438,23 @@ class PlayState(State):
         for e in events:
             if e.type == KEYDOWN and e.key == K_ESCAPE:
                 self.manager.go_to(MenuState())
+
+    # output the set of ann inputs, and the result for generating practice data
+    def generate_data(self, ann_inputs, prev_direction, new_direction):
+        if (prev_direction != 'START'):
+            simOuput = [0,0,0]
+            prevIndex = DIRECTIONS.index(prev_direction)
+            newIndex = DIRECTIONS.index(new_direction)
+            if (prevIndex == newIndex):
+                simOuput[1] = 1
+            elif (DIRECTIONS[newIndex] == DIRECTIONS[prevIndex - 1]): # if we turned left
+                simOuput[0] = 1
+            else:
+                simOuput[2] = 1
+            ouputList = ann_inputs + simOuput
+            print(ouputList)
+
+        
 
 
 class PauseState(State):

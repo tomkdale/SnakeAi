@@ -98,7 +98,7 @@ class PlayState(State):
 
 
         # PLAYER, BOARD, FOOD
-        self.player = Player((NUM_ROWS // 2, NUM_COLS // 2), 'START', BLUE, 2)
+        self.player = Player((NUM_ROWS // 2, NUM_COLS // 2), 'START', BLUE, -1)
         self.board = Board()
         self.food = Food(FOOD_COUNTER.get() // 4)
         #assert self.food.position == (5,5), "Food didn't initialize properly."

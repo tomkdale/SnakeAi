@@ -1,0 +1,69 @@
+__author__ = 'Aaron'
+
+# PARAMETER CONSTANTS
+FRAMES_PER_SEC = 21
+SCREEN_WIDTH = 900
+SCREEN_HEIGHT = 800
+NUM_ROWS = 20 
+NUM_COLS = 20
+DISPLAY_MARGIN = 80  # Used to display player scores and player names
+# TODO need to make this able to be changed, fill_gap and render calcs are off
+CELL_MARGIN = 1
+
+# CALCULATED CONSTANTS
+HORIZONTAL_MARGINS = ((NUM_COLS + 1) * CELL_MARGIN)
+VERTICAL_MARGINS = ((NUM_ROWS + 1) * CELL_MARGIN)
+CELL_SIDE = min((SCREEN_WIDTH - HORIZONTAL_MARGINS) // (NUM_COLS + 1),
+                (SCREEN_HEIGHT - DISPLAY_MARGIN - VERTICAL_MARGINS) // (NUM_ROWS + 1))
+HORIZONTAL_OFFSET = (SCREEN_WIDTH - (CELL_SIDE * NUM_COLS +
+                                     HORIZONTAL_MARGINS)) / 2 + CELL_MARGIN
+VERTICAL_OFFSET = DISPLAY_MARGIN * 1.2 + CELL_MARGIN
+
+UP_L = (HORIZONTAL_OFFSET - 1, VERTICAL_OFFSET - 1)
+UP_R = (HORIZONTAL_OFFSET + NUM_COLS * CELL_SIDE +
+        HORIZONTAL_MARGINS - 1, VERTICAL_OFFSET - 1)
+LOW_L = (HORIZONTAL_OFFSET - 1, VERTICAL_OFFSET +
+         NUM_ROWS * CELL_SIDE + VERTICAL_MARGINS - 1)
+LOW_R = (HORIZONTAL_OFFSET + NUM_COLS * CELL_SIDE + HORIZONTAL_MARGINS - 1,
+         VERTICAL_OFFSET + NUM_ROWS * CELL_SIDE + VERTICAL_MARGINS - 1)
+
+# COLOR CONSTANTS
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+WHITE = (255, 255, 255)
+GRAY = (40, 40, 40)
+BLACK = (0, 0, 0)
+YELLOW = (255, 255, 0)
+# DEFAULT_COLOR = (111, 198, 217)
+MARGIN_COLOR = GRAY
+DEFAULT_COLOR = BLACK
+
+# FONT
+FONT = 'consolas'
+
+# BOARD CONSTANTS
+FOOD = 10
+OUT_BOUNDS = -1
+EMPTY = 0
+
+# ANN CONSTANTS
+NUM_INPUTS = 9
+NUM_OUTPUTS = 3
+NUM_HIDDEN = 0
+NUM_PER_HIDDEN = (NUM_INPUTS + NUM_OUTPUTS) * 2 // 3
+#NUM_PER_HIDDEN = NUM_INPUTS
+
+"""
+def set_screen_size(width, height):
+    global SCREEN_HEIGHT, SCREEN_WIDTH
+    SCREEN_HEIGHT = height
+    SCREEN_WIDTH = width
+"""
+
+class CounterSixteen(object):
+    def __init__(self):
+        self.counter = 0
+    def get(self):
+        return self.counter
+    def add(self):
+        self.counter = (self.counter + 1) % 16

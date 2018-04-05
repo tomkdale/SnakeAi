@@ -10,9 +10,6 @@ from constants import *
 
 import math
 
-DIRECTIONS = ['LEFT','UP','RIGHT','DOWN']
-SCORE_MULTIPLY = 50
-GENERATE_DATA = True
 # This is used to count to 16 so that each of the 16 pre set food and starting velocities are used!
 FOOD_COUNTER = CounterSixteen()
 
@@ -376,7 +373,8 @@ class PlayState(State):
         Get the next move to make. Next keypress if human player, output of neural network otherwise.
         :return: next direction to move in
         """
-        if self.manager.ann is None:
+
+        if self.manager.ann is None and self.manager.tomBot is None:
             keypress = pygame.key.get_pressed()
             if keypress[K_LEFT] and self.player.direction != 'RIGHT':
                 return 'LEFT'
@@ -388,6 +386,8 @@ class PlayState(State):
                 return 'RIGHT'
             else:
                 return self.player.direction  # continue going in same direction
+        elif self.manager.ann is None:
+            return self.manager.tomBot.getDirection(self.ann_inputs())
         else:
             outputs = self.manager.ann.update(self.ann_inputs())    #in the order: turn left, go straight, turn right
             max_output = max(outputs)
@@ -419,6 +419,13 @@ class PlayState(State):
         up = self.board.get_cell(row - 1, col)
         down = self.board.get_cell(row + 1, col)
         right = self.board.get_cell(row, col + 1)
+
+        # to compress the coordinates to a scale from 0 - 1 we will divide by 20
+
+        food_x = food_x / 20
+        food_y = food_y / 20
+        row = row / 20
+        col = col / 20
 
         direction = self.player.direction
         if direction == 'UP':

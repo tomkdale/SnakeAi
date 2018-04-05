@@ -1,5 +1,12 @@
 __author__ = 'Aaron'
 
+# FOR DEBUGGING/ GETTING DATA / STUFF I ADDED TO CONTROL THINGS
+POINTS_DESIRED = 500
+DEBUGGING_FITNESS = False
+DIRECTIONS = ['LEFT','UP','RIGHT','DOWN']
+SCORE_MULTIPLY = 50
+GENERATE_DATA = True
+
 # PARAMETER CONSTANTS
 FRAMES_PER_SEC = 21
 SCREEN_WIDTH = 900
@@ -42,7 +49,7 @@ DEFAULT_COLOR = BLACK
 FONT = 'consolas'
 
 # BOARD CONSTANTS
-FOOD = 10
+FOOD = 1
 OUT_BOUNDS = -1
 EMPTY = 0
 
@@ -66,4 +73,6 @@ class CounterSixteen(object):
     def get(self):
         return self.counter
     def add(self):
+        if DEBUGGING_FITNESS:
+            print(self.counter)
         self.counter = (self.counter + 1) % 16

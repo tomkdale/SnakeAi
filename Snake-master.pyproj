@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{e3af68b3-51d9-40a0-bc58-5626e3e472c5}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>Snake.py</StartupFile>
+    <StartupFile>tomBot.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -34,6 +34,9 @@
     <Compile Include="Player.py" />
     <Compile Include="Snake.py" />
     <Compile Include="States.py" />
+    <Compile Include="tomBot.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>

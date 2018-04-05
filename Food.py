@@ -5,6 +5,7 @@ import math
 from Board import *
 
 
+
 # FOOD DEFINITION
 class Food:
     def __init__(self, number = 0):
@@ -16,6 +17,7 @@ class Food:
             self.position = NUM_COLS - 5, NUM_ROWS - 5
         else:
             self.position = 5, NUM_ROWS - 5
+
         """
         self.position = self.next_indices()
         while (self.position[0] == NUM_ROWS // 2 or self.position[1] == NUM_COLS // 2) \

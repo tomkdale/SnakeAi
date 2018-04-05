@@ -7,7 +7,7 @@ import time
 from tqdm import tqdm
 
 # Default tuning parameters
-POP_SIZE = 500
+POP_SIZE = 30
 NUM_GENS = 1000
 CROSS_RATE = 50 / 100 # Keep this at 50 to perform uniform crossover
 MUTATE_RATE = 4 / 100 # This seems reasonable (4%)
@@ -59,9 +59,11 @@ class Genome:
 
     def recalculate_fitness(self):
         """
-        Calculates the fitness of an individual genome.
+        Calculates the fitness  of an individual genome.
         """
         temp = []
+        if DEBUGGING_FITNESS:
+            print("NEW SNAKE")
         for i in range(FITNESS_ATTEMPTS):
             temp.append(Snake.fitness(self.weights, HEADLESS))
         self.fitness = sum(temp) / FITNESS_ATTEMPTS

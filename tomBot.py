@@ -17,10 +17,11 @@ class tomBot(object):
         return 'LEFT'
 
 def main(headless):
+    gameOvered = False
     if LOADING_BAR:
         pbar = tqdm(total = POINTS_DESIRED, ascii = True, desc = "GETTING TOMBOT DATA")
     counter = 0
-    while counter < POINTS_DESIRED:
+    while counter <= POINTS_DESIRED:
         bot = tomBot()
         pygame.init()
         pygame.display.set_caption("Snake")
@@ -34,18 +35,23 @@ def main(headless):
         manager = StateManager(None, bot)
         manager.go_to(PlayState())
 
-        while not isinstance(manager.state, GameOverState) and counter < POINTS_DESIRED:
+        while not isinstance(manager.state, GameOverState) and counter <= POINTS_DESIRED:
             if headless:
                 clock.tick(FRAMES_PER_SEC)
             
             counter += 1
-            if LOADING_BAR:
+            if LOADING_BAR and not gameOvered:
                 pbar.update(1)
+            else:
+                gameOvered = False
             manager.state.update()
 
             if headless:
                 manager.state.render(screen)
                 pygame.display.flip()
+        if counter < POINTS_DESIRED:
+            counter -= 1
+            gameOvered = True
     if LOADING_BAR:
         pbar.close()
 

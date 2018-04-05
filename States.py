@@ -82,7 +82,7 @@ class OptionsState(State):
 
     def update(self):
         pass
-
+    
     def handle_events(self, events):
         for e in events:
             if e.type == KEYDOWN and e.key == K_RETURN:
@@ -98,6 +98,7 @@ class PlayState(State):
         self.player = Player((NUM_ROWS // 2, NUM_COLS // 2), 'START', BLUE, -1)
         self.board = Board()
         self.food = Food(FOOD_COUNTER.get() // 4)
+        
         #assert self.food.position == (5,5), "Food didn't initialize properly."
         self.initialized = True  # flag used for initial board generation
 
@@ -395,6 +396,9 @@ class PlayState(State):
             else:
                 return self.player.direction  # continue going in same direction
         elif self.manager.ann is None:
+            if self.player.direction == 'START':
+                FOOD_COUNTER.add()
+                return DIRECTIONS[FOOD_COUNTER.get() % 4]
             return self.manager.tomBot.getDirection(self.ann_inputs())
         else:
             outputs = self.manager.ann.update(self.ann_inputs())    #in the order: turn left, go straight, turn right

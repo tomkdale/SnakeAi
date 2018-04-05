@@ -6,7 +6,7 @@ from NeuralNet import *
 from Snake import *
 from tqdm import tqdm
 
-LOADING_BAR = False
+LOADING_BAR = True
 
 class tomBot(object):
     def __init__(self):
@@ -51,4 +51,4 @@ def main(headless):
 
 if __name__ == '__main__':
     # True here to display TomBot, false to just be speedy
-    main(True)
+    main(False)

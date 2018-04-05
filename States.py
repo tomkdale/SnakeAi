@@ -119,6 +119,14 @@ class PlayState(State):
         self.logo_text_pos.x = SCREEN_WIDTH // 2
         self.logo_text_pos.y = CELL_SIDE
 
+        # FOR GENERATING DATA
+        if GENERATE_DATA:
+            self.dataFile = open('data.txt','a')
+
+    def __del__(self):
+        if GENERATE_DATA:
+            self.dataFile.close()
+
     @staticmethod
     def draw_bounds(line_color, screen):
         """
@@ -459,8 +467,8 @@ class PlayState(State):
             else:
                 simOuput[2] = 1
             ouputList = ann_inputs + simOuput
-            print(ouputList)
-            # TODO: make it so that instead of outputting a 2 when near the body of the snake, maybe a -1?
+            # TODO: feature engineering?
+            self.dataFile.write(str(ouputList) + '\n')
 
         
 

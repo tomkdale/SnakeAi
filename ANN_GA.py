@@ -7,7 +7,7 @@ import time
 from tqdm import tqdm
 
 # Default tuning parameters
-POP_SIZE = 30
+POP_SIZE = 5000
 NUM_GENS = 1000
 CROSS_RATE = 50 / 100 # Keep this at 50 to perform uniform crossover
 MUTATE_RATE = 4 / 100 # This seems reasonable (4%)

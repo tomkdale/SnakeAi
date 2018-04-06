@@ -399,7 +399,7 @@ class PlayState(State):
             if self.player.direction == 'START':
                 FOOD_COUNTER.add()
                 return DIRECTIONS[FOOD_COUNTER.get() % 4]
-            return self.manager.tomBot.getDirection(self.player.get_position(), self.food.position())
+            return self.manager.tomBot.getDirection(self.ann_inputs())
         else:
             outputs = self.manager.ann.update(self.ann_inputs())    #in the order: turn left, go straight, turn right
             max_output = max(outputs)
@@ -418,7 +418,7 @@ class PlayState(State):
                 directionIndex = (directionIndex + 1) % 4
                 return DIRECTIONS[directionIndex]
 
-	def ann_inputs(self):
+    def ann_inputs(self):
         """
         Return a list of the necessary inputs for a neural network.
         :return: [Manhattan distance to food (x, y), state of board to left,
@@ -426,7 +426,7 @@ class PlayState(State):
                   TODO - change this description to be accurate
         """
         row, col = self.player.get_position()
-        food_x, food_y = self.food.position()
+        food_x, food_y = self.food.position
         left = self.board.get_cell(row, col - 1)
         up = self.board.get_cell(row - 1, col)
         down = self.board.get_cell(row + 1, col)
@@ -434,22 +434,29 @@ class PlayState(State):
 
         # to compress the coordinates to a scale from 0 - 1 we will divide by 20
 
-        food_x = food_x / 20
-        food_y = food_y / 20
-        row = row / 20
-        col = col / 20
+        food_x = food_x / 19.0
+        food_y = food_y / 19.0
+        row = row / 19.0
+        col = col / 19.0
+
+        # now we want to make it so that the readings are relative, rather than absolute
+        # the goal being have the x and y inputs being seperate, with a high x meaning the food is to the right, and vice versa
+        # negative values are fine, and just mean the food is to the left
+
+        relX = food_x - row
+        relY = food_y - col
+
+        inputs = [0,0,0,0,0,0,0]
 
         direction = self.player.direction
         if direction == 'UP':
-            inputs = [food_x, food_y, row, col, left, up, right, 0, 1]
+            inputs = [relX, relY, left, up, right, 0, 1]
         elif direction == 'LEFT':
-            inputs = [food_x, food_y, row, col, down, left, up, -1, 0]
+            inputs = [relX, relY, down, left, up, -1, 0]
         elif direction == 'DOWN':
-            inputs = [food_x, food_y, row, col, right, down, left, 0, -1]
+            inputs = [relX, relY, right, down, left, 0, -1]
         elif direction == 'RIGHT':
-            inputs = [food_x, food_y, row, col, up, right, down, 1, 0]
-        else:
-            inputs = [food_x, food_y, row, col, left, up, right, 0, 0]
+            inputs = [relX, relY, up, right, down, 1, 0]
 
         return inputs
 
@@ -470,10 +477,9 @@ class PlayState(State):
                 simOuput[0] = 1
             else:
                 simOuput[2] = 1
-            ouputList = ann_inputs + simOuput
-            # TODO: feature engineering?
-            self.dataFile.write(str(ouputList) + '\n')
-
+            outputList = ann_inputs + simOuput
+            # self.dataFile.write(str(outputList) + '\n')
+            print(outputList)
         
 
 

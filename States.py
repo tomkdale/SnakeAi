@@ -399,7 +399,7 @@ class PlayState(State):
             if self.player.direction == 'START':
                 FOOD_COUNTER.add()
                 return DIRECTIONS[FOOD_COUNTER.get() % 4]
-            return self.manager.tomBot.getDirection(self.ann_inputs())
+            return self.manager.tomBot.getDirection(self.player.get_position(), self.food.position())
         else:
             outputs = self.manager.ann.update(self.ann_inputs())    #in the order: turn left, go straight, turn right
             max_output = max(outputs)
@@ -418,7 +418,7 @@ class PlayState(State):
                 directionIndex = (directionIndex + 1) % 4
                 return DIRECTIONS[directionIndex]
 
-    def ann_inputs(self):
+	def ann_inputs(self):
         """
         Return a list of the necessary inputs for a neural network.
         :return: [Manhattan distance to food (x, y), state of board to left,
@@ -426,7 +426,7 @@ class PlayState(State):
                   TODO - change this description to be accurate
         """
         row, col = self.player.get_position()
-        food_x, food_y = self.food.position
+        food_x, food_y = self.food.position()
         left = self.board.get_cell(row, col - 1)
         up = self.board.get_cell(row - 1, col)
         down = self.board.get_cell(row + 1, col)

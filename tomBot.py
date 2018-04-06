@@ -11,10 +11,35 @@ LOADING_BAR = True
 class tomBot(object):
     def __init__(self):
         pass
-    def getDirection(self, ann_inputs):
-        # modify inputs, do math and determine direction
-        # output a 'LEFT','RIGHT','DOWN','UP'
-        return 'LEFT'
+    def getDirection(self,myPos,foodPos):
+        #tombot takes self postion and food posion, looks at free space directly next to snake head, then moves snake towards goal without running into walls
+        myX, myY = myPos
+        food_x,food_y = foodPos
+        left = Board.check_collision(self,(myX-1,myY) != -1
+        right = Board.check_collision(self,(myX+1,myY) != -1
+        up = Board.check_collision(self,(myX,myY+1) != -1
+        down = Board.check_collision(self,(myX,myY-1) != -1
+        
+        
+        if(myY == food_x) or (myY < food_y and up != EMPTY) or (myY > food_y and down != EMPTY)
+            if(myX < food_x)
+                if(right == EMPTY)
+                    return 'RIGHT'
+            else
+                if(left == EMPTY)
+                    return 'Left'
+        else
+            if(myY < food_y)
+                if(up == EMPTY)
+                    return 'UP'
+            else
+                if(down == EMPTY)
+                    return 'DOWN'
+
+        if(right == EMPTY) return 'RIGHT'
+        elif (left == EMPTY) return 'LEFT'
+        elif(up == EMPTY) return 'UP'
+        else return 'DOWN'
 
 def main(headless):
     gameOvered = False

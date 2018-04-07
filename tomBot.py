@@ -51,8 +51,8 @@ class tomBot(object):
         # x_vel and y_vel describe the current direction with:
         #   (1,0) being right: (-1,0) being left: (0,1) being up: (0,-1) being down
 
-        relX = ann_inputs[1]
-        relY = -ann_inputs[0]
+        relX = ann_inputs[0]
+        relY = ann_inputs[1]
 
         leftCollision = ann_inputs[2]
         straightCollision = ann_inputs[3]
@@ -158,7 +158,9 @@ def main(headless):
     if LOADING_BAR:
         pbar = tqdm(total = POINTS_DESIRED, ascii = True, desc = "GETTING TOMBOT DATA")
     counter = 0
+    game_no = 1
     while counter <= POINTS_DESIRED:
+        print("Gamer number: " + str(game_no))
         bot = tomBot()
         pygame.init()
         pygame.display.set_caption("Snake")
@@ -188,6 +190,7 @@ def main(headless):
                 pygame.display.flip()
         if counter < POINTS_DESIRED:
             counter -= 1
+            game_no += 1
             gameOvered = True
     if LOADING_BAR:
         pbar.close()

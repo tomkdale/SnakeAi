@@ -425,26 +425,29 @@ class PlayState(State):
                   in front of, and right of the player]
                   TODO - change this description to be accurate
         """
-        row, col = self.player.get_position()
-        food_x, food_y = self.food.position
-        left = self.board.get_cell(row, col - 1)
-        up = self.board.get_cell(row - 1, col)
-        down = self.board.get_cell(row + 1, col)
-        right = self.board.get_cell(row, col + 1)
+
+        # ALL COORDINATES ARE BACKWARDS.
+
+        snake_y, snake_x = self.player.get_position()
+        food_y, food_x = self.food.position
+        left = self.board.get_cell(snake_y, snake_x - 1)
+        up = self.board.get_cell(snake_y - 1, snake_x)
+        down = self.board.get_cell(snake_y  + 1, snake_x)
+        right = self.board.get_cell(snake_y, snake_x + 1)
 
         # to compress the coordinates to a scale from 0 - 1 we will divide by 20
 
         food_x = food_x / 19.0
         food_y = food_y / 19.0
-        row = row / 19.0
-        col = col / 19.0
+        snake_x = snake_x / 19.0
+        snake_y = snake_y / 19.0
 
         # now we want to make it so that the readings are relative, rather than absolute
         # the goal being have the x and y inputs being seperate, with a high x meaning the food is to the right, and vice versa
         # negative values are fine, and just mean the food is to the left
 
-        relX = food_x - row
-        relY = food_y - col
+        relX = food_x - snake_x
+        relY = snake_y - food_y
 
         inputs = [0,0,0,0,0,0,0]
 

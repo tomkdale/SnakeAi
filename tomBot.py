@@ -23,21 +23,32 @@ class tomBot(object):
             return (DIRECTIONS.index("DOWN"), "DOWN")
     
     
-    def checkOK(self, currentDir, desiredDir, left, straight, right):
+    def heuristic(self, desiredDir):
         """
         Determines if the block is free in the direction we want to go in
         takes: currentDir, desiredDir, left, straight, right
         returns: if the desired direction is safe
         """
-        # if we are trying to move in the opposite direction...
-        if DIRECTIONS[(DIRECTIONS.index(currentDir) + 2) % 4] == desiredDir:
-            return False
-        if currentDir == desiredDir:
-            return straight != -1
-        elif DIRECTIONS[(DIRECTIONS.index(currentDir) + 1) % 4] == desiredDir: # if we want to turn right
-            return right != -1
+        # if we are trying to move in the opposite direction/the move is illegal, return -1
+        if DIRECTIONS[(DIRECTIONS.index(self.currentDirection) + 2) % 4] == desiredDir:
+            return -5
+        elif self.currentDirection == desiredDir and self.straightCollision == -1:
+            return -5
+        elif DIRECTIONS[(DIRECTIONS.index(self.currentDirection) + 1) % 4] == desiredDir and self.rightCollision == -1:
+            return -5
+        elif DIRECTIONS[(DIRECTIONS.index(self.currentDirection) - 1) % 4] == desiredDir and self.leftCollision == -1:
+            return -5
+
+        # Otherwise we have a valid Direction to move in, so lets get the heuristic!
+
+        if desiredDir == 'RIGHT':
+            return self.relX
+        elif desiredDir == 'UP':
+            return self.relY
+        elif desiredDir == 'LEFT':
+            return -self.relX
         else:
-            return left != -1
+            return -self.relY
 
     def getDirection(self, ann_inputs):
         # tomBot takes ann_inputs, looks at free space directly next to snake head, then moves snake towards goal without running into walls
@@ -51,81 +62,26 @@ class tomBot(object):
         # x_vel and y_vel describe the current direction with:
         #   (1,0) being right: (-1,0) being left: (0,1) being up: (0,-1) being down
 
-        relX = ann_inputs[0]
-        relY = ann_inputs[1]
+        self.relX = ann_inputs[0]
+        self.relY = ann_inputs[1]
+        self.leftCollision = ann_inputs[2]
+        self.straightCollision = ann_inputs[3]
+        self.rightCollision = ann_inputs[4]
+        self.x_vel = ann_inputs[5]
+        self.y_vel = ann_inputs[6]
 
-        leftCollision = ann_inputs[2]
-        straightCollision = ann_inputs[3]
-        rightCollision = ann_inputs[4]
-        x_vel = ann_inputs[5]
-        y_vel = ann_inputs[6]
+        #Don't actually use the Index part of this, can change this later.
 
-        currentIndex, currentDirection = self.getIndex(x_vel,y_vel)
+        self.currentIndex, self.currentDirection = self.getIndex(self.x_vel,self.y_vel)
 
-        temp = DIRECTIONS.copy()
+        temp = {}
 
-        if (abs(relX) >= abs(relY)): # If we want to move closer in the x direction
-            if relX > 0:
-                if self.checkOK(currentDirection,"RIGHT",leftCollision,straightCollision,rightCollision):
-                    return "RIGHT"
-                temp.remove("RIGHT")
-            elif relX < 0:
-                if  self.checkOK(currentDirection,"LEFT",leftCollision,straightCollision,rightCollision):
-                    return "LEFT"
-                temp.remove("LEFT")
-            else:
-                print(relX)
-        else:   # If we want to move closer in the y direction
-            if relY > 0:
-                if  self.checkOK(currentDirection,"UP",leftCollision,straightCollision,rightCollision):
-                    return "UP"
-                temp.remove("UP")
-            elif relY < 0:
-                if  self.checkOK(currentDirection,"DOWN",leftCollision,straightCollision,rightCollision):
-                    return "DOWN"
-                temp.remove("DOWN")
-            else:
-                print("Yok")
+        for x in DIRECTIONS:
+            temp[x] = self.heuristic(x)
 
-        # So we tried the easy things, and they did not work
-        # The possibilities are:
-        #   - The way was blocked
-        #   - The direction was invalid
-
-        # Now we are going to try and minimize the other coordinate, removing it from temp if it failed
-
-        if "DOWN" in temp and "UP" in temp:
-            if relY > 0:
-                if self.checkOK(currentDirection,"UP",leftCollision,straightCollision,rightCollision):
-                    return "UP"
-                temp.remove("UP")
-
-            elif relY < 0:
-                if self.checkOK(currentDirection,"DOWN",leftCollision,straightCollision,rightCollision):
-                    return "DOWN"
-                temp.remove("DOWN")
-
-  
-        else:
-            if relX > 0:
-                if self.checkOK(currentDirection,"RIGHT",leftCollision,straightCollision,rightCollision):
-                    return "RIGHT"
-                temp.remove("RIGHT")
-            elif relX < 0:
-                if self.checkOK(currentDirection,"LEFT",leftCollision,straightCollision,rightCollision):
-                    return "LEFT"
-                temp.remove("LEFT")
-
-        # Now all that is left is random selection(?)
-        random.shuffle(temp)
-        for i in range(len(temp) - 1):
-            if self.checkOK(currentDirection,temp[0],leftCollision,straightCollision,rightCollision):
-                return temp[0]
-            temp.pop(0)
-        if self.checkOK(currentDirection,temp[0],leftCollision,straightCollision,rightCollision):
-            print("forced crash :(")
-        return temp[0]
-
+        if max(temp.values()) <= -1:
+            print("Forced crash")
+        return max(temp, key = temp.get)
 
 
         """

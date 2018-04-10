@@ -41,7 +41,7 @@ class tomBot(object):
 
         # Otherwise we have a valid Direction to move in, so lets get the heuristic!
 
-        if desiredDir == 'RIGHT':
+        elif desiredDir == 'RIGHT':
             return self.relX
         elif desiredDir == 'UP':
             return self.relY
@@ -81,7 +81,10 @@ class tomBot(object):
 
         if max(temp.values()) <= -1:
             print("Forced crash")
-        return max(temp, key = temp.get)
+
+        best_option = max(temp, key = temp.get)
+
+        return best_option
 
 
         """

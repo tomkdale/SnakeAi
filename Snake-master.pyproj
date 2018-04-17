@@ -27,6 +27,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Board.py" />
+    <Compile Include="clf.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="constants.py" />
     <Compile Include="Food.py" />
     <Compile Include="NeuralNet.py">

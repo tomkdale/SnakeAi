@@ -6,7 +6,8 @@ from NeuralNet import *
 from Snake import *
 from tqdm import tqdm
 
-LOADING_BAR = False
+LOADING_BAR = True
+DISPLAY_SCREEN = True
 
 class tomBot(object):
     def __init__(self):
@@ -29,6 +30,7 @@ class tomBot(object):
         takes: currentDir, desiredDir, left, straight, right
         returns: if the desired direction is safe
         """
+        # DIRECTIONS = ['LEFT','UP','RIGHT','DOWN']
         # if we are trying to move in the opposite direction/the move is illegal, return -1
         if DIRECTIONS[(DIRECTIONS.index(self.currentDirection) + 2) % 4] == desiredDir:
             return -5
@@ -46,9 +48,9 @@ class tomBot(object):
         elif desiredDir == 'UP':
             return self.relY
         elif desiredDir == 'LEFT':
-            return -self.relX
+            return -1 * self.relX
         else:
-            return -self.relY
+            return -1 * self.relY
 
     def getDirection(self, ann_inputs):
         # tomBot takes ann_inputs, looks at free space directly next to snake head, then moves snake towards goal without running into walls
@@ -80,7 +82,11 @@ class tomBot(object):
             temp[x] = self.heuristic(x)
 
         if max(temp.values()) <= -1:
-            print("Forced crash")
+            """
+            dataFile = open('data.txt','a')
+            dataFile.write("Forced crash" + '\n')
+            dataFile.close()
+            """
 
         best_option = max(temp, key = temp.get)
 
@@ -119,7 +125,12 @@ def main(headless):
     counter = 0
     game_no = 1
     while counter <= POINTS_DESIRED:
-        print("Gamer number: " + str(game_no))
+        #print("Gamer number: " + str(game_no))
+        """
+        dataFile = open('data.txt','a')
+        dataFile.write("Game number: " + str(game_no) + '\n')
+        dataFile.close()
+        """
         bot = tomBot()
         pygame.init()
         pygame.display.set_caption("Snake")
@@ -156,4 +167,4 @@ def main(headless):
 
 if __name__ == '__main__':
     # True here to display TomBot, false to just be speedy
-    main(True)
+    main(DISPLAY_SCREEN)

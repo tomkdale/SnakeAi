@@ -484,7 +484,8 @@ class PlayState(State):
                 simOuput[2] = 1
             outputList = ann_inputs + simOuput
             dataFile = open('data.txt','a')
-            dataFile.write(str(outputList) + '\n')
+            outputList = ", ".join(map(str, outputList))
+            dataFile.write(outputList + '\n')
             dataFile.close()
             #print(outputList)
         

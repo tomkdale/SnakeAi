@@ -7,7 +7,7 @@ from Snake import *
 from tqdm import tqdm
 
 LOADING_BAR = True
-DISPLAY_SCREEN = True
+DISPLAY_SCREEN = False
 
 class tomBot(object):
     def __init__(self):
@@ -126,11 +126,11 @@ def main(headless):
     game_no = 1
     while counter <= POINTS_DESIRED:
         #print("Gamer number: " + str(game_no))
-        """
+        
         dataFile = open('data.txt','a')
         dataFile.write("Game number: " + str(game_no) + '\n')
         dataFile.close()
-        """
+        
         bot = tomBot()
         pygame.init()
         pygame.display.set_caption("Snake")
@@ -164,6 +164,25 @@ def main(headless):
             gameOvered = True
     if LOADING_BAR:
         pbar.close()
+    if GENERATE_DATA:
+        dataFile = open('data.txt','r')
+        lines = dataFile.readlines()
+        dataFile.close()
+
+        for line in lines:
+            if "Game" in line:
+                index = lines.index(line)
+                lines.remove(line)
+                if index != 0:
+                    lines.remove(lines[index - 1])
+
+
+
+        dataFile = open('data.txt','w')
+        for x in lines:
+            dataFile.write(x)
+        dataFile.close()
+
 
 if __name__ == '__main__':
     # True here to display TomBot, false to just be speedy

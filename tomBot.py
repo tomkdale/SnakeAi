@@ -7,7 +7,7 @@ from Snake import *
 from tqdm import tqdm
 
 LOADING_BAR = True
-DISPLAY_SCREEN = True
+DISPLAY_SCREEN = False
 
 class tomBot(object):
     def __init__(self):

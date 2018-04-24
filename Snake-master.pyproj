@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{e3af68b3-51d9-40a0-bc58-5626e3e472c5}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>tomBot.py</StartupFile>
+    <StartupFile>SciKitTraining.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>

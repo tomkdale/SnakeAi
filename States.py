@@ -385,7 +385,7 @@ class PlayState(State):
         :return: next direction to move in
         """
 
-        if self.manager.ann is None and self.manager.tomBot is None:
+        if self.manager.ann is None and self.manager.tomBot is None and self.manager.predictor is None:
             keypress = pygame.key.get_pressed()
             if keypress[K_LEFT] and self.player.direction != 'RIGHT':
                 return 'LEFT'
@@ -397,12 +397,12 @@ class PlayState(State):
                 return 'RIGHT'
             else:
                 return self.player.direction  # continue going in same direction
-        elif self.manager.ann is None:
+        elif self.manager.ann is None and self.manager.predictor is None:
             if self.player.direction == 'START':
                 FOOD_COUNTER.add()
                 return DIRECTIONS[FOOD_COUNTER.get() % 4]
             return self.manager.tomBot.getDirection(self.ann_inputs())
-        else:
+        elif self.manager.predictor is None:
             outputs = self.manager.ann.update(self.ann_inputs())    #in the order: turn left, go straight, turn right
             max_output = max(outputs)
             direction = self.player.direction
@@ -419,6 +419,12 @@ class PlayState(State):
             elif outputs[2] is max_output: # turn right...
                 directionIndex = (directionIndex + 1) % 4
                 return DIRECTIONS[directionIndex]
+        else:
+            if self.player.direction == 'START':
+                FOOD_COUNTER.add()
+                return DIRECTIONS[FOOD_COUNTER.get() % 4]
+            else:
+                return self.manager.predictor.getDirection(self.ann_inputs())
 
     def ann_inputs(self):
         """

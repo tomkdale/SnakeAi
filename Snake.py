@@ -15,13 +15,14 @@ ann = NeuralNet(NUM_INPUTS, NUM_OUTPUTS, NUM_HIDDEN, NUM_PER_HIDDEN)
 
 # STATE MANAGER
 class StateManager(object):
-    def __init__(self, ann=None, tomBot = None):
+    def __init__(self, ann=None, tomBot = None, predictor = None):
         """
         Initializes the state manager.
         Contains "global" variables to hold neural network and score.
         """
         self.ann = ann
         self.tomBot = tomBot
+        self.predictor = predictor
         self.fitness = 0
 
         self.state = None

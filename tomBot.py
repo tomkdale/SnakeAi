@@ -7,7 +7,7 @@ from Snake import *
 from tqdm import tqdm
 
 LOADING_BAR = True
-DISPLAY_SCREEN = False
+DISPLAY_SCREEN = True
 
 class tomBot(object):
     def __init__(self):
@@ -141,7 +141,7 @@ def main(headless):
             screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
             screen.fill((0, 0, 0))
 
-        manager = StateManager(None, bot)
+        manager = StateManager(tomBot = bot)
         manager.go_to(PlayState())
 
         while not isinstance(manager.state, GameOverState) and counter <= POINTS_DESIRED:

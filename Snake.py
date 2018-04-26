@@ -15,7 +15,7 @@ ann = NeuralNet(NUM_INPUTS, NUM_OUTPUTS, NUM_HIDDEN, NUM_PER_HIDDEN)
 
 # STATE MANAGER
 class StateManager(object):
-    def __init__(self, ann=None, tomBot = None, predictor = None):
+    def __init__(self, ann=None, tomBot = None, predictor = None, GAinput = None):
         """
         Initializes the state manager.
         Contains "global" variables to hold neural network and score.
@@ -23,6 +23,7 @@ class StateManager(object):
         self.ann = ann
         self.tomBot = tomBot
         self.predictor = predictor
+        self.GAinput = GAinput
         self.fitness = 0
 
         self.state = None
@@ -87,6 +88,37 @@ def fitness(weights, headless=1):
             pygame.display.flip()
 
     return manager.fitness
+
+def vectorFitness(vectorGA, headless = 1):
+
+    pygame.init()
+    pygame.display.set_caption("Snake")
+
+    screen = None
+
+    if headless == 0:
+        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        screen.fill((0, 0, 0))
+
+    manager = StateManager(GAinput = vectorGA)
+    manager.go_to(PlayState())
+
+    counter = 0
+
+    while not isinstance(manager.state, GameOverState) and counter < MAX_MOVES:
+        if headless == 0:
+            clock.tick(FRAMES_PER_SEC)
+
+        manager.state.update()
+        counter += 1
+
+        if headless == 0:
+            manager.state.render(screen)
+            pygame.display.flip()
+
+    return manager.fitness
+
+
 
 
 # PROGRAM EXECUTION

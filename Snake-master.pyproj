@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{e3af68b3-51d9-40a0-bc58-5626e3e472c5}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>SciKitTraining.py</StartupFile>
+    <StartupFile>VectorGA.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -20,6 +20,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="data.txt" />
+    <Content Include="FoodPositions.txt" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -42,6 +43,9 @@
     <Compile Include="Snake.py" />
     <Compile Include="States.py" />
     <Compile Include="tomBot.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VectorGA.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

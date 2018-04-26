@@ -57,13 +57,10 @@ def plot_on_dataset(X, y, ax, name):
         print("Training set loss: %f" % mlp.loss_)
     for mlp, label, args in zip(mlps, labels, plot_args):
             ax.plot(mlp.loss_curve_, label=label, **args)
-
-
-
-
-
 """
+Everything above this line is used to compare classifiers.
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Everything below this line is to use a particular classifier to play snake.
 """
 class predictorNeuralNet(object):
     def __init__(self, clfModel):
@@ -145,18 +142,24 @@ def train(model):
     print("Training set score: %f" % model.score(X, Y))
     print("Training set loss: %f" % model.loss_)
     plt.plot(model.loss_curve_)
+    plt.xlabel('Iterations')
+    plt.ylabel('Loss')
+    plt.title('Loss over time for this classifier')
     plt.show()
 
 
 
-"""
+# This main contains what we think to be the best nn, and simply trains it on the 200 000 data points, and then displays it 10 times
+
 if __name__ == '__main__':
-    clf = MLPClassifier(solver = 'sgd', learning_rate = 'invscaling', momentum = .9, nesterovs_momentum = True, learning_rate_init = 0.2)
+    clf = MLPClassifier(solver = 'adam', learning_rate_init = 0.001)
     train(clf)
     for i in range(10):
         test(clf)
+
 """
 
+# This main can be used if you wish to compare the different learning methods...
 
 if __name__ == '__main__':
     dataRows = []
@@ -185,3 +188,4 @@ if __name__ == '__main__':
     plot_on_dataset(X,Y, axes, name = 'SnakeBot')
     fig.legend(axes.get_lines(), labels, ncol=3, loc="upper center")
     plt.show()
+"""

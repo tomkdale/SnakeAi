@@ -1,15 +1,23 @@
-__author__ = 'Aaron'
-
 import random
 import math
 from Board import *
-
+types = int, int
 
 
 # FOOD DEFINITION
 class Food:
     def __init__(self, number = 0):
-        if number == 0:
+
+        if NO_RANDOM == True:
+            self.locations = []
+            self.count = 0
+            with open("Foodpositions.txt", 'r') as f:
+                for line in f:
+                    elements = tuple(t(e) for t,e in zip(types, line.split()))
+                    self.locations.append(elements)
+            self.position = self.locations[0]
+
+        elif number == 0:
             self.position = 5,5
         elif number == 1:
             self.position = NUM_COLS - 5, 5
@@ -46,5 +54,18 @@ class Food:
         Also, updates its center.
         """
         self.old_center = self.center
-        self.position = Food.next_indices()
+        if NO_RANDOM == True:
+            self.count += 1
+            self.position = self.locations[self.count]
+        else:
+            self.position = Food.next_indices()
         self.center = Board.get_center(self.position[0], self.position[1])
+
+
+if __name__ == '__main__':
+    dataFood = Food()
+    with open("FoodPositions.txt",'w') as f:
+        for i in range(300):
+            f.write(str(dataFood.position[0]) + ' ' + str(dataFood.position[1]) + '\n')
+            dataFood.move()
+            print(dataFood.position)

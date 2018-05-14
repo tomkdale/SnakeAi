@@ -1,5 +1,3 @@
-__author__ = 'Aaron'
-
 # IMPORTS
 import pygame
 from pygame.locals import *
@@ -104,7 +102,7 @@ class PlayState(State):
 
         # FITNESS FUNCTION KILL SWITCH
         self.moves_since_food = 0
-        self.moves_total = 0
+        #self.moves_total = 0
 
         # PLAYER NAMES & SCORES
         self.font = pygame.font.SysFont(FONT, 24)
@@ -323,7 +321,7 @@ class PlayState(State):
         row, column = player.update()
         valid = player.set_position(row, column)
         self.moves_since_food += 1
-        self.moves_total += 1
+        #self.moves_total += 1
 
         # WALL/BOUNDS COLLISION CHECK
         if valid == -1 and player.direction != 'START':
@@ -342,6 +340,8 @@ class PlayState(State):
         food = self.food
         ate_food = self.board.check_collision((row, column))
         if ate_food == -1 and player.direction != 'START':
+            if player.length == 1:
+                self.manager.fitness = 0
             self.end_game()
         else:
             self.board.set_cell(row, column, player.number)
@@ -352,6 +352,7 @@ class PlayState(State):
                     food.move()
                 player.score += food.score
                 player.length += 1
+                self.manager.fitness += food.score / self.moves_since_food
                 self.moves_since_food = 0
 
         # FOOD UPDATE
@@ -374,7 +375,7 @@ class PlayState(State):
         currentDistance = math.sqrt(abs(dist_y) ** 2 + abs(dist_x) ** 2)
 
         #self.manager.fitness += shiftConstant * (maxDistance - currentDistance)
-        self.manager.fitness += (SCORE_MULTIPLY * self.player.score) / self.moves_total
+        #self.manager.fitness += (SCORE_MULTIPLY * self.player.score) / self.moves_total
          
         self.manager.go_to(GameOverState())
 
@@ -390,10 +391,14 @@ class PlayState(State):
                 FOOD_COUNTER.add()
                 return DIRECTIONS[FOOD_COUNTER.get() % 4]
             return self.manager.tomBot.getDirection(self.ann_inputs())
+
+
         elif not self.manager.GAinput is None:
             if self.player.direction == 'START':
                 return 'UP'
             return self.manager.GAinput.getDirection(self.player.direction)
+
+
         elif not self.manager.ann is None:
             outputs = self.manager.ann.update(self.ann_inputs())    #in the order: turn left, go straight, turn right
             max_output = max(outputs)
@@ -411,6 +416,8 @@ class PlayState(State):
             elif outputs[2] is max_output: # turn right...
                 directionIndex = (directionIndex + 1) % 4
                 return DIRECTIONS[directionIndex]
+
+
         elif not self.manager.predictor is None:
             if self.player.direction == 'START':
                 FOOD_COUNTER.add()

@@ -1,5 +1,3 @@
-__author__ = 'Aaron'
-
 # IMPORTS
 import sys
 

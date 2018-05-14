@@ -1,6 +1,3 @@
-__author__ = 'Aaron'
-
-
 # PLAYER DEFINITION
 class Player():
     def __init__(self, start_position, direction, player_color, player_number):

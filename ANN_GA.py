@@ -1,5 +1,3 @@
-__author__ = 'Aaron'
-
 from constants import *
 from NeuralNet import *
 import Snake

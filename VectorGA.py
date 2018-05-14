@@ -6,7 +6,7 @@ import random
 
 
 # Default tuning parameters
-POP_SIZE = 5000
+POP_SIZE = 10000
 NUM_GENS = 1000
 CROSS_RATE = 50 / 100 # Keep this at 50 to perform uniform crossover
 MUTATE_RATE = 4 / 100 # This seems reasonable (4%)
@@ -127,7 +127,9 @@ class vectorGA(object):
                 if (SHOW_NEW_BEST):
                     Snake.vectorFitness(self.best_genome, 0)
 
-        Snake.vectorFitness(self.best_genome.copy(), 0)
+        displayGenome = self.best_genome.copy()
+
+        Snake.vectorFitness(displayGenome, 0)
 
         # Record fitness value parameters
         self.avg_fitness = self.total_fitness / len(old_population)

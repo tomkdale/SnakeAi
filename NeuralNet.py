@@ -1,8 +1,3 @@
-__author__ = 'Aaron'
-
-# Adapted from: http://stackoverflow.com/questions/15395835/simple-multi-layer-neural-network-implementation
-# and: http://www.ai-junkie.com/ann/evolved/
-
 import random
 import math
 
